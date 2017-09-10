@@ -1,5 +1,5 @@
 const Promise = require("bluebird");
-const uuidV4 = require('uuid/v4');
+const uuidV4 = require("uuid/v4");
 const _ = require("underscore");
 
 const usersRepository = require("../repositories/users-repository");

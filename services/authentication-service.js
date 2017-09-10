@@ -1,12 +1,12 @@
 const Promise = require("bluebird");
 
-const userDataRepository = require("../repositories/user-data-repository");
+const userDataRepository = require("../repositories/users-repository");
 
 class AuthenticationService {
     validateLogin(userName, password) {
         console.log("userName:", userName);
         console.log("password:", password);
-        
+
         return new Promise((resolve, reject) => {
             userDataRepository.customQueryV1("users", {}, function (err, results) {
                 if (err) {

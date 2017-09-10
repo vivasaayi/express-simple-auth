@@ -1,8 +1,11 @@
 const loginRoutes = require("./routes/login-routes");
 const registrationRoutes = require("./routes/registration-routes");
 
+const logger = require("./utils/logger");
+
 function init(app) {
-  console.log("Registering Routes")
+  logger.log("Registering Routes");
+
   loginRoutes.registerAuthRoutes(app);
   registrationRoutes.registerRegistrationRoutes(app);
 }
