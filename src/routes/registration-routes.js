@@ -9,5 +9,5 @@ function registerRegistrationRoutes(app, router) {
 }
 
 module.exports = {
-  registerAuthRoutes
+  registerRegistrationRoutes
 };

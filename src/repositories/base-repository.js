@@ -1,7 +1,6 @@
 const _ = require("underscore");
 
 const DataAccessWrapper = require("./data-access");
-const objectId = require("mongodb").ObjectID;
 
 const logger = require("../utils/logger");
 
@@ -51,17 +50,6 @@ class BaseRepository {
 
     result += temp.join(",");
     return result;
-  }
-
-  save(collectionName, document, callback) {
-    if (document._id) {
-      document.updateOn = new Date(); // eslint-disable-line no-param-reassign
-      return MongoWrapper.updateDocument(collectionName, document);
-    }
-
-    document._id = MongoWrapper.getObjectId(); // eslint-disable-line no-param-reassign
-    document.addedOn = new Date();  // eslint-disable-line no-param-reassign
-    return MongoWrapper.insertDocument(collectionName, document);
   }
 
   loadAll(collectionName) {

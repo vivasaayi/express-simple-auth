@@ -1,8 +1,8 @@
-const loginRoutes = require("./routes/login-routes");
-const registrationRoutes = require("./routes/registration-routes");
+const loginRoutes = require("./src/routes/login-routes");
+const registrationRoutes = require("./src/routes/registration-routes");
 
-const logger = require("./utils/logger");
-const mailProxy = require("./proxies/mail-proxy");
+const logger = require("./src/utils/logger");
+const mailProxy = require("./src/proxies/mail-proxy");
 
 function init(app) {
   logger.log("Registering Routes");
