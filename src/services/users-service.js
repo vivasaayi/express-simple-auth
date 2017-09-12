@@ -206,7 +206,18 @@ class UsersService {
   createUser(params) {
     const locationInfo = "UsersService:CreateUser:";
 
+    if (!params) {
+      const result = {
+        code: "UNABLE TO PARSE USER INFO"
+      };
+
+      logger.error(locationInfo, result);
+
+      return Promise.reject(result);
+    }
+
     const user = this.extractNewUserInfo(params);
+
     const validationResult = this.validateUserInfo(user);
 
     if (validationResult.length > 0) {

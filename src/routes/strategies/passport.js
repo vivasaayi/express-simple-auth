@@ -4,10 +4,6 @@ const facebookStrategy = require("./facebook-strategy");
 const googleStrategy = require("./google-strategy");
 const localStrategy = require("./local-strategy");
 
-passport.use(facebookStrategy);
-passport.use(googleStrategy);
-passport.use(localStrategy);
-
 const usersService = require("../../services/users-service");
 const logger = require("../../utils/logger");
 
@@ -52,18 +48,21 @@ function deserializeUser(user, done) {
   done(null, user);
 }
 
-module.exports = (app) => {
+function initializePassport(app, router) {
   logger.log("Initializing Passport");
-
-  passport.use(new LocalStrategy(userNamePasswordFields, authenticateUsers));
-
-  passport.serializeUser(serializeUser);
-  passport.deserializeUser(deserializeUser);
 
   app.use(passport.initialize());
   app.use(passport.session());
 
+  passport.use(facebookStrategy);
+  passport.use(googleStrategy);
+  passport.use(localStrategy);
+
   passport.authenticationMiddleware = authenticationMiddleware;
 
   logger.log("Passport Initialized");
+}
+
+module.exports = {
+  initializePassport
 };

@@ -17,7 +17,7 @@ function getLogoutPage(req, res) {
   res.redirect("/");
 };
 
-function registerLocalAuthRoutes(app) {
+function registerLocalAuthRoutes(router) {
   router.get("/login", getLoginPage);
   router.get("/logout", getLogoutPage);
 
