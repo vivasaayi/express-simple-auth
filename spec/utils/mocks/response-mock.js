@@ -1,7 +1,7 @@
 class Response {
-  constructor(done) {
+  constructor(doneCB) {
     this.renderCalls = [];
-    this.done = done;
+    this.doneCB = doneCB;
   }
 
   send() {
@@ -9,10 +9,11 @@ class Response {
   }
 
   render() {
+    console.log("Render Invoked");
     this.renderCalls.push(arguments);
 
-    if (this.done) {
-      this.done();
+    if (this.doneCB) {
+      this.doneCB(this.renderCalls);
     }
   }
 }

@@ -80,11 +80,11 @@ class BaseRepository {
     return MongoWrapper.deleteDocument(collectionName, document);
   }
 
-  dropCollections(collections) {
+  emptyTables(tables) {
     const promises = [];
 
-    _.each(collections, (collection) => {
-      promises.push(MongoWrapper.dropCollection(collection));
+    _.each(tables, (table) => {
+      promises.push(this.executeQuery("DELETE FROM " + table));
     });
 
     return Promise.all(promises);

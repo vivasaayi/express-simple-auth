@@ -3,7 +3,7 @@ const indexFile = require("../../index");
 const Router = require("../utils/mocks/router-mock");
 const App = require("../utils/mocks/app-mock");
 
-describe("express-simple-auth", () => {
+xdescribe("express-simple-auth", () => {
   it("referring the package should not throw errors", () => {
     expect(indexFile).toBeDefined();
   });
@@ -20,9 +20,12 @@ describe("express-simple-auth", () => {
 
     indexFile.init(app, router);
 
-    console.log(app.calls);
-    console.log(router.calls);
+    // ToDO: Assert
+    expect(true).toBe(true);
 
-    console.log(JSON.stringify(router.calls));
+    // console.log(app.calls);
+    // console.log(router.calls);
+
+    // console.log(JSON.stringify(router.calls));
   });
 });

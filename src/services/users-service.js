@@ -191,8 +191,14 @@ class UsersService {
           activationId
         };
 
+        console.log("Marked Existing links as expired");
+
         return usersRepository.saveActivationId(record);
-      });
+      })
+      .catch(err => {
+        console.log("Error persisting activation Id", err);
+        return Promise.reject(err);
+      })
   }
 
   hashPasswordAndSave(user) {
@@ -203,41 +209,55 @@ class UsersService {
       });
   }
 
+  validateInputAndUserInfo(params) {
+    const locationInfo = "UsersService:validateInputAndUserInfo:";
+
+    return new Promise((resolve, reject) => {
+      if (!params) {
+        const validationError = {
+          errorCode: "UNABLE_TO_PARSE_USER_INFO"
+        };
+
+        logger.error(locationInfo, validationError);
+
+        return reject(validationError);
+      }
+
+      const user = this.extractNewUserInfo(params);
+
+      const validationResult = this.validateUserInfo(user);
+
+      if (validationResult.length > 0) {
+        const validationError = {
+          errorCode: "VALIDATION_FAILED",
+          errorMessages: validationResult,
+        };
+
+        logger.error(locationInfo, validationError);
+
+        return reject(validationError);
+      }
+
+      logger.info(locationInfo, "Validation Completed", user);
+
+      return resolve(user);
+    });
+  }
+
   createUser(params) {
     const locationInfo = "UsersService:CreateUser:";
-
-    if (!params) {
-      const result = {
-        code: "UNABLE TO PARSE USER INFO"
-      };
-
-      logger.error(locationInfo, result);
-
-      return Promise.reject(result);
-    }
-
-    const user = this.extractNewUserInfo(params);
-
-    const validationResult = this.validateUserInfo(user);
-
-    if (validationResult.length > 0) {
-      const result = {
-        code: "VALIDATION FAILED",
-        messages: validationResult,
-      };
-
-      logger.error(locationInfo, result);
-
-      return Promise.reject(result);
-    }
-
-    logger.info(locationInfo, "Validation Completed", user);
 
     const registrationStatus = {
       status: "Not Started"
     };
 
-    return this.checkUserAlereadyExists(user.email, user.displayName)
+    let user = null;
+
+    return this.validateInputAndUserInfo(params)
+      .then(result => {
+        user = result;
+        return this.checkUserAlereadyExists(user.email, user.displayName);
+      })
       .then((userExists) => {
         if (!userExists) {
           logger.info(locationInfo, "User not exists. Creating New.", user);
@@ -274,6 +294,11 @@ class UsersService {
       .then(() => {
         registrationStatus.status = "Completed";
         return registrationStatus.user;
+      })
+      .catch(err => {
+        console.log("Error Creating User", err);
+        
+        return Promise.reject(err);
       });
   }
 

@@ -42,7 +42,7 @@ class RegistrationController {
       .catch((err) => {
         logger.log("registration failed", err);
 
-        res.render("register", { hideMenus: true, errorMessage: err.message, validations: err.messages });
+        res.render("register", { hideMenus: true, errorCode: err.errorCode, errorMessages: err.errorMessages });
       });
   }
 }

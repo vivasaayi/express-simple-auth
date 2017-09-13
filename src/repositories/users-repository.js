@@ -9,7 +9,7 @@ const queries = {
   USERS_ACTIVATE: `UPDATE users SET "accountActivated"=true WHERE email=$1`,
   ACTIVATION_LINKS_INSERT: "INSERT INTO activation_links(_id, email) VALUES ($1, $2)",
   ACTIVATION_LINKS_EXPIRE_LINKS: "UPDATE activation_links SET expired = true WHERE email=$1",
-  ACTIVATION_LINKS_GET_BY_EMAIL: "SELECT * FROM activation_links WHERE _id=$1",
+  ACTIVATION_LINKS_GET_BY_EMAIL: "SELECT * FROM activation_links WHERE email=$1",
   USERS_RATINGS_SUMMARY: `select "type", status, "redeemSuccess", count(*) from users u
       inner join codes c on c."postedBy"=u._id
       left join transactions t on c._id=t."dealId"
@@ -100,7 +100,7 @@ class UsersRepository extends BaseRepository {
   getActivationLinksForUser(activationId) {
     return this.executeQuery(queries.ACTIVATION_LINKS_GET_BY_EMAIL, [activationId])
       .then((results) => {
-        logger.log("UsersRepository:getActivationLinksForUser:", results);
+        console.log("UsersRepository:getActivationLinksForUser:", results);
         return results;
       });
   }
@@ -120,7 +120,7 @@ class UsersRepository extends BaseRepository {
 
     return this.executeQuery(queries.ACTIVATION_LINKS_INSERT, params)
       .then((results) => {
-        logger.log("UsersRepository:saveActivationId:", results);
+        console.log("UsersRepository:saveActivationId:", results);
       });
   }
 

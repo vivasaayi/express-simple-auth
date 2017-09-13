@@ -3,6 +3,8 @@
 const winston = require("winston");
 const _ = require("underscore");
 
+winston.level = 'debug';
+
 class Logger {
   info(message, data) {
     winston.log("info", message, data);
